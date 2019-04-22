@@ -1,0 +1,10 @@
+https://ponychallenge.trustpilot.com/api-docs/index.html#!/pony-challenge/get_pony_challenge_maze_maze_id_print
+
+https://ponychallenge.trustpilot.com/index.html
+
+{
+  "maze-width": 25,
+  "maze-height": 15,
+  "maze-player-name": "Pinkie Pie",
+  "difficulty": 2
+}
