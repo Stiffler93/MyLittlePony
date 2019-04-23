@@ -1,65 +1,65 @@
+const ponyAPI = require('./src/ponyAPI');
+const log = require('./src/logger').log;
 
-const https = require('https');
+const ponyName = "Pinkie Pie";
+const mazeWidth = 15;
+const mazeHeight = 15;
+const difficulty = 0;
 
 function main() {
-  const stdin = process.openStdin(); 
-  stdin.setRawMode(true);    
-  stdin.resume();
-  stdin.setEncoding('utf8');
-  stdin.on('data', function (key) {
-    process.stdout.write(key + '\n');
+    let mazeId;
+    if (process.argv.length > 3) {
+        console.log(process.argv.length);
+        usage();
+    }
 
-    if(key === '\u0003') process.exit();
-  });
+    if (process.argv.length === 3) {
+        mazeId = process.argv[2];
+        process.stdout.write('Continue game with ID: ' + mazeId);
+        updateScreen(mazeId, ponyName, '');
+    } else {
+        ponyAPI.startChallenge(ponyName, mazeWidth, mazeHeight, difficulty)
+            .subscribe(response => {
+                log('StartChallenge: ');
+                log(response);
+                process.stdout.write('Start new Game. Maze ID: ' + response);
+                mazeId = response;
+                updateScreen(mazeId, ponyName, '');
+            });
+    }
+
+    const stdin = process.openStdin();
+    stdin.setRawMode(true);
+    stdin.resume();
+    stdin.setEncoding('utf8');
+    stdin.on('data', function (key) {
+
+        if (key === '\u0003') process.exit();
+        else if (['a', 's', 'd', 'w'].indexOf(key) >= 0) move(key);
+    });
 }
 
-function startChallenge(ponyName, width, height, difficulty) {
-  https.get('url', response => {
-
-  });
-
-  var postData = querystring.stringify({
-    'msg' : 'Hello World!'
-});
-
-var options = {
-  hostname: 'posttestserver.com',
-  port: 443,
-  path: '/post.php',
-  method: 'POST',
-  headers: {
-       'Content-Type': 'application/x-www-form-urlencoded',
-       'Content-Length': postData.length
-     }
-};
-
-var req = https.request(options, (res) => {
-  console.log('statusCode:', res.statusCode);
-  console.log('headers:', res.headers);
-
-  res.on('data', (d) => {
-    process.stdout.write(d);
-  });
-});
-
-req.on('error', (e) => {
-  console.error(e);
-});
-
-req.write(postData);
-req.end(); 
+function move(mazeId, key) {
+    const direction = key === 'a' ? 'west' : key === 's' ? 'south' : key === 'd' ? 'east' : 'north';
+    ponyAPI.movePony(mazeId, direction);
 }
 
-function getChallengeData(mazeId) {
-
+function updateScreen(mazeId, ponyName, direction) {
+    ponyAPI.printMaze(mazeId).subscribe(data => {
+        process.stdout.write('\033c');
+        process.stdout.write('Game with Id: ' + mazeId);
+        process.stdout.write('Pony: ' + ponyName);
+        process.stdout.write('Direction: ' + direction);
+        process.stdout.write('-----------------------------');
+        process.stdout.write('');
+        process.stdout.write(data);
+    });
 }
 
-function movePony(mazeId, direction) {
-
-}
-
-function printMaze(mazeId) {
-
+function usage() {
+    process.stdout.write('Usage: node start.js [maze-ID]\n');
+    process.stdout.write('If the maze id is passed the game is continued.\n');
+    process.exit();
 }
 
 main();
