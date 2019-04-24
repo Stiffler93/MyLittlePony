@@ -8,14 +8,6 @@ const fs = require('fs');
  * POST
  */
 function startChallenge(ponyName, width, height, difficulty) {
-    var agent = new https.Agent({ca: fs.readFileSync("C:\\Program Files\\Java\\jdk1.8.0_172\\jre\\lib\\security\\cacerts")});
-
-    const options = {
-        hostname: "https://ponychallenge.trustpilot.com",
-        path: "https://ponychallenge.trustpilot.com/pony-challenge/maze",
-        method: 'POST',
-        agent: agent
-    };
 
     const mazeSettings = {
         "maze-width": width,
@@ -24,7 +16,7 @@ function startChallenge(ponyName, width, height, difficulty) {
         "difficulty": difficulty
     };
 
-    const promise = axios.post("https://ponychallenge.trustpilot.com/pony-challenge/maze", mazeSettings, options);
+    const promise = axios.post("https://ponychallenge.trustpilot.com/pony-challenge/maze", mazeSettings);
     return from(promise);
 }
 
@@ -50,7 +42,7 @@ function movePony(mazeId, direction) {
  * GET
  */
 function printMaze(mazeId) {
-    const promise = https.get("https://ponychallenge.trustpilot.com/pony-challenge/maze/" + mazeId + "/print");
+    const promise = axios.get("https://ponychallenge.trustpilot.com/pony-challenge/maze/" + mazeId + "/print");
     return from(promise);
 }
 

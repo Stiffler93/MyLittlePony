@@ -1,0 +1,25 @@
+{
+  "name": "MyLittlePony",
+  "version": "1.0.0",
+  "description": "",
+  "main": "start.js",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "rxjs": "^6.5.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stiffler93/MyLittlePony.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Stiffler93/MyLittlePony/issues"
+  },
+  "homepage": "https://github.com/Stiffler93/MyLittlePony#readme"
+}

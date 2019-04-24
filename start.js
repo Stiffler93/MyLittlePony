@@ -1,5 +1,6 @@
 const ponyAPI = require('./src/ponyAPI');
 const log = require('./src/logger').log;
+const util = require('util')
 
 const ponyName = "Pinkie Pie";
 const mazeWidth = 15;
@@ -21,9 +22,10 @@ function main() {
         ponyAPI.startChallenge(ponyName, mazeWidth, mazeHeight, difficulty)
             .subscribe(response => {
                 log('StartChallenge: ');
-                log(response);
-                process.stdout.write('Start new Game. Maze ID: ' + response);
-                mazeId = response;
+                process.stdout.write('Start new Game. Maze ID: \n');
+                // process.stdout.write(util.inspect(response));
+                mazeId = response.data.maze_id;
+                process.stdout.write('Maze Id: ' + mazeId);
                 updateScreen(mazeId, ponyName, '');
             });
     }
@@ -45,14 +47,14 @@ function move(mazeId, key) {
 }
 
 function updateScreen(mazeId, ponyName, direction) {
-    ponyAPI.printMaze(mazeId).subscribe(data => {
+    ponyAPI.printMaze(mazeId).subscribe(request => {
         process.stdout.write('\033c');
-        process.stdout.write('Game with Id: ' + mazeId);
-        process.stdout.write('Pony: ' + ponyName);
-        process.stdout.write('Direction: ' + direction);
-        process.stdout.write('-----------------------------');
-        process.stdout.write('');
-        process.stdout.write(data);
+        process.stdout.write('Game with Id: ' + mazeId + '\n');
+        process.stdout.write('Pony: ' + ponyName + '\n');
+        process.stdout.write('Direction: ' + direction + '\n');
+        process.stdout.write('-----------------------------' + '\n');
+        process.stdout.write('\n');
+        process.stdout.write(request.data + '\n');
     });
 }
 
