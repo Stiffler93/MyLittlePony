@@ -1,6 +1,6 @@
-const ponyAPI = require('./src/ponyAPI');
-const logger = require('./src/logger');
-const utils = require('./src/utils');
+const ponyAPI = require('./ponyAPI');
+const logger = require('./logger');
+const utils = require('./utils');
 
 /**
  * Starts a manual game where the player can itself take control of the pony by using the

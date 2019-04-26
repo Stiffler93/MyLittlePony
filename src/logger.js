@@ -6,7 +6,7 @@ let fileCleaned = false;
 
 function log(text) {
 	cleanFile();
-	fs.appendFile(logFile, text + '\r\n', 'utf8', err => {});
+	fs.appendFileSync(logFile, text + '\r\n');
 }
 
 function logObject(obj) {
@@ -23,6 +23,14 @@ function logError(title, error) {
     log(util.inspect(error));
 }
 
+function logOrientationMap(orientationMap) {
+    log('Orientation map:');
+    for (let i = 0; i < 225; i++) {
+        log('[' + i + ']');
+        logObject(orientationMap[i]);
+    }
+}
+
 function cleanFile() {
     if(!fileCleaned) {
         fileCleaned = true;
@@ -34,3 +42,4 @@ module.exports.log = log;
 module.exports.logResponse = logResponse;
 module.exports.logError = logError;
 module.exports.logObject = logObject;
+module.exports.logOrientationMap = logOrientationMap;
