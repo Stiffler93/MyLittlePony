@@ -1,11 +1,16 @@
 const {from} = require('rxjs');
-const https = require('https');
 const axios = require('axios');
 const fs = require('fs');
 
 
-/*
- * POST
+/**
+ * POST Request to start a new game.
+ *
+ * @param ponyName
+ * @param width
+ * @param height
+ * @param difficulty
+ * @returns {Observable<ObservedValueOf<ObservableInput<any>>>}
  */
 function startChallenge(ponyName, width, height, difficulty) {
 
@@ -20,16 +25,23 @@ function startChallenge(ponyName, width, height, difficulty) {
     return from(promise);
 }
 
-/*
- * GET
+/**
+ * GET Request to get the current game data and states.
+ *
+ * @param mazeId
+ * @returns {Observable<ObservedValueOf<ObservableInput<any>>>}
  */
 function getChallengeData(mazeId) {
     const promise = axios.get("https://ponychallenge.trustpilot.com/pony-challenge/maze/" + mazeId);
     return from(promise);
 }
 
-/*
- * POST
+/**
+ * POST Request to move the pony through the maze.
+ *
+ * @param mazeId
+ * @param direction
+ * @returns {Observable<ObservedValueOf<ObservableInput<any>>>}
  */
 function movePony(mazeId, direction) {
     const promise = axios.post("https://ponychallenge.trustpilot.com/pony-challenge/maze/" + mazeId, {
@@ -38,8 +50,11 @@ function movePony(mazeId, direction) {
     return from(promise);
 }
 
-/*
- * GET
+/**
+ * GET Request to get the maze's state in printed form.
+ *
+ * @param mazeId
+ * @returns {Observable<ObservedValueOf<ObservableInput<any>>>}
  */
 function printMaze(mazeId) {
     const promise = axios.get("https://ponychallenge.trustpilot.com/pony-challenge/maze/" + mazeId + "/print");

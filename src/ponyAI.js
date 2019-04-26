@@ -5,6 +5,12 @@ const path = require('./path');
 const path2 = require('./path2');
 const {combineLatest} = require('rxjs');
 
+/**
+ * The PonyAI takes care of navigating the pony through the maze.
+ *
+ * For every round in the game, the challenge data is requested from the pony API. It is evaluated what
+ * may be a good next move regarding the pony's, the Domokun's and the exit's position.
+ */
 class PonyAI {
 
     orientation = new ReplaySubject(1);
@@ -24,12 +30,16 @@ class PonyAI {
                 this.endPoint = response.data['end-point'][0];
 
                 const orientationMap = path2.find(this.mazeGrid, this.mazeWidth, this.endPoint);
+                orientation.next(orientationMap);
             }, error => {
                 logger.logError('Error on getting challenge data:', error);
                 process.exit(1);
             });
     }
 
+    /**
+     * This function starts the Pony AI and triggers the pony's movement.
+     */
     start() {
         if (this.turns-- === 0) {
             logger.log('Turns used up. Pony is lost.');
@@ -37,7 +47,7 @@ class PonyAI {
             process.exit(0);
         }
 
-        combineLatest(orientation, ponyAPI.getChallengeData(this.mazeId))
+        const subscription = combineLatest(orientation, ponyAPI.getChallengeData(this.mazeId))
             .subscribe((orientationMap, response) => {
                 logger.log('got challenge data');
                 logger.logResponse(response);
@@ -53,6 +63,8 @@ class PonyAI {
                 logger.logError('Error on getting challenge data:', error);
                 process.exit(1);
             });
+
+        subscription.unsubscribe();
     }
 }
 
