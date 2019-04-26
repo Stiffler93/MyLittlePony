@@ -9,6 +9,10 @@ function log(text) {
 	fs.appendFile(logFile, text + '\r\n', 'utf8', err => {});
 }
 
+function logObject(obj) {
+    log(util.inspect(obj));
+}
+
 function logResponse(response) {
 	const obj = Object.assign({}, response.status, response.statusText, response.data);
     log(util.inspect(obj));
@@ -29,3 +33,4 @@ function cleanFile() {
 module.exports.log = log;
 module.exports.logResponse = logResponse;
 module.exports.logError = logError;
+module.exports.logObject = logObject;

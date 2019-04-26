@@ -14,10 +14,11 @@ function main() {
         usage();
     }
 
+    logger.log('Start new Game.');
     ponyAPI.startChallenge(ponyName, mazeWidth, mazeHeight, difficulty)
         .subscribe(response => {
             logger.logResponse(response);
-            logger.log('Start new Game. Maze ID:');
+            logger.log('Maze ID:');
             mazeId = response.data.maze_id;
             logger.log('Maze Id: ' + mazeId);
             utils.updateScreen(mazeId, ponyName, '');
