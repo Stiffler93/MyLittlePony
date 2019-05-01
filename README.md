@@ -1,6 +1,6 @@
 # MyLittlePony
 
-MyLittlePony is my solution to the challenge found at [Link](https://ponychallenge.trustpilot.com/index.html).
+MyLittlePony is my solution to the challenge found at [https://ponychallenge.trustpilot.com/index.html](https://ponychallenge.trustpilot.com/index.html).
 It was implemented in NodeJs and runs in the command line.
 
 ## How to run the program
