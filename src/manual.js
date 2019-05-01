@@ -8,7 +8,7 @@ const utils = require('./utils');
  *
  * @param mazeId
  */
-function startManualGame(mazeId) {
+function startManualGame(mazeId, ponyName) {
     logger.log('Start Manual Game with ID: ' + mazeId);
 
     utils.print('');
@@ -22,7 +22,7 @@ function startManualGame(mazeId) {
     stdin.on('data', function (key) {
 
         if (key === '\u0003') process.exit();
-        else if (['a', 's', 'd', 'w'].indexOf(key) >= 0) move(mazeId, key);
+        else if (['a', 's', 'd', 'w'].indexOf(key) >= 0) move(mazeId, key, ponyName);
     });
 }
 
@@ -32,7 +32,7 @@ function startManualGame(mazeId) {
  * @param mazeId
  * @param key
  */
-function move(mazeId, key) {
+function move(mazeId, key, ponyName) {
     const direction = key === 'a' ? 'west' : key === 's' ? 'south' : key === 'd' ? 'east' : 'north';
     logger.log('Move: ' + direction);
     ponyAPI.movePony(mazeId, direction)

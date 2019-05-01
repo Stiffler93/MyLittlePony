@@ -1,9 +1,0 @@
-
-
-\'state-result\': \'Move accepted\'
-
-\'state-result\': \'You won. Game ended\'
-
-\'state-result\': \'Can\\\'t walk in there\'
-
-\'state-result\': \'You lost. Killed by monster\'

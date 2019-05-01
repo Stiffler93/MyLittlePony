@@ -64,10 +64,11 @@ function print(text) {
  * Prints information on how to use this program to stdout.
  */
 function usage() {
-    print('Usage: node start.js [--manual]\n');
-    process.exit();
+    print('Usage: node start.js [--manual] [--ponyName=<value>] [--width=<value>] [--height=<value>] [--difficulty=<value>]\n');
+    process.exit(1);
 }
 
 module.exports.checkStatus = checkStatus;
 module.exports.updateScreen = updateScreen;
 module.exports.print = print;
+module.exports.usage = usage;

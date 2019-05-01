@@ -4,10 +4,11 @@ const utils = require('./src/utils');
 const PonyAI = require('./src/ponyAI').PonyAI;
 const manual = require('./src/manual');
 
-const ponyName = "Pinkie Pie";
-const mazeWidth = 15;
-const mazeHeight = 15;
-const difficulty = 0;
+let ponyName = "Pinkie Pie";
+let mazeWidth = 15;
+let mazeHeight = 15;
+let difficulty = 5;
+let manualMode = false;
 
 /**
  * The entry point to this application.
@@ -25,9 +26,10 @@ const difficulty = 0;
  *      https://ponychallenge.trustpilot.com/api-docs/index.html
  */
 function main() {
-    if (process.argv.length > 3) {
-        utils.usage();
-    }
+
+    process.argv.forEach(function (value, index) {
+        if (index >= 2) processArgument(value);
+    });
 
     let mazeId;
 
@@ -39,16 +41,54 @@ function main() {
             logger.log('Maze Id: ' + mazeId);
             utils.updateScreen(mazeId, ponyName, '');
 
-            if (process.argv.length === 3) {
-                process.argv[2] === '--manual' ? manual.startManualGame(mazeId) : utils.usage();
+            if (manualMode) {
+                manual.startManualGame(mazeId, ponyName);
             } else {
                 const ponyAI = new PonyAI(mazeId, ponyName);
                 ponyAI.start();
             }
         }, error => {
             logger.logError('Error on starting a new game:', error);
+            utils.print(error.response.data);
             process.exit(1);
         });
+}
+
+function processArgument(parameter) {
+    logger.log('process Argument: ' + parameter);
+    const [argument, value] = parameter.split('=');
+
+    switch (argument) {
+        case '--manual':
+            manualMode = true;
+            break;
+        case '--ponyName':
+            ponyName = value;
+            break;
+        case '--width':
+            if (isNaN(value)) {
+                utils.print('Wrong --width argument: Not a Number!');
+                process.exit(1);
+            }
+            mazeWidth = parseInt(value);
+            break;
+        case '--height':
+            if (isNaN(value)) {
+                utils.print('Wrong --height argument: Not a Number!');
+                process.exit(1);
+            }
+            mazeHeight = parseInt(value);
+            break;
+        case '--difficulty':
+            if (isNaN(value)) {
+                utils.print('Wrong --difficulty argument: Not a Number!');
+                process.exit(1);
+            }
+            difficulty = parseInt(value);
+            break;
+        default:
+            utils.usage();
+    }
 }
 
 main();
